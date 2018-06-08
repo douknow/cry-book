@@ -1,0 +1,6 @@
+node_modules
+out
+package-lock.json
+err-log.txt
+lose.json
+data
