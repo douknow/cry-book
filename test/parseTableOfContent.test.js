@@ -2,6 +2,6 @@ const getPageContent = require('../getPageContent');
 const parseTableOfContent = require('../parse/parseTableOfContent');
 
 (async () => {
-  const html = await getPageContent('https://www.biqudu.com/31_31677/', 'utf8');
+  const html = await getPageContent('http://www.biquge.com.tw/0_316/', 'gbk');
   parseTableOfContent(html);
 })();

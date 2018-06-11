@@ -16,8 +16,8 @@ async.mapLimit(
     console.log(chapter.id);
     try {
       const html = await getPageContent(
-        'https://www.biqudu.com' + chapter.link,
-        'utf8'
+        'http://www.biquge.com.tw' + chapter.link,
+        'gbk'
       );
       saveChapter(chapter.id, parseChapter(html), chapter.name);
     } catch (e) {
