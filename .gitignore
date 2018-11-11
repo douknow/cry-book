@@ -4,3 +4,4 @@ package-lock.json
 err-log.txt
 lose.json
 data
+.DS_Store
