@@ -1,9 +1,6 @@
 const fs = require('fs');
-const allChapter = require('../data/allChapter.json');
 
-const title = '傲世九重天';
-
-module.exports = () => {
+module.exports = (title, allChapter) => {
   let lis = '';
   const chapters = fs.readdirSync(`${__dirname}/../out/OEBPS/chapters`);
   allChapter.forEach(chapter => {

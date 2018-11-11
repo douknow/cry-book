@@ -18,11 +18,5 @@ module.exports = html => {
     });
   });
 
-  console.log('Write to file save all the chapter info.');
-  fs.writeFileSync(
-    `${__dirname}/../data/allChapter.json`,
-    JSON.stringify(allChapter)
-  );
-
-  console.log('Save ok!');
+  return allChapter;
 };

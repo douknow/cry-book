@@ -1,13 +1,10 @@
 const fs = require('fs');
 const moment = require('moment');
-const allChapter = require('../data/allChapter.json');
 
-const author = 'some';
-const title = '傲世九重天';
 const identifier = 'https://ice.com';
 const publisher = 'ice';
 
-module.exports = () => {
+module.exports = (title, allChapter) => {
   let items = '';
   let itemrefs = '';
   const chapters = fs.readdirSync(`${__dirname}/../out/OEBPS/chapters`);

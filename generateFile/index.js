@@ -16,13 +16,13 @@ const mimetypeContent = 'application/epub+zip';
 
 const metaInfoPath = `${__dirname}/../out/META-INF`;
 
-module.exports = () => {
+module.exports = (title, allChapter) => {
   createDir(metaInfoPath);
 
   fs.writeFileSync(`${metaInfoPath}/container.xml`, containerContent);
   fs.writeFileSync(`${__dirname}/../out/mimetype`, mimetypeContent);
 
-  opf();
-  toc();
-  combine();
+  opf(title, allChapter);
+  toc(title, allChapter);
+  combine(title);
 };
