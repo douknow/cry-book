@@ -1,5 +1,4 @@
 const cheerio = require('cheerio');
-const fs = require('fs');
 
 module.exports = html => {
   console.log('Parse table of content!');

@@ -10,6 +10,8 @@ const combine = require('./generateFile/index');
 const mkdir = require('./util/createDir');
 const rm = require('rimraf');
 const readline = require('readline');
+const url = require('url');
+const Parse = require('./parse/Parse');
 
 const parseTableOfContent = require('./parse/parseTableOfContent');
 
@@ -31,31 +33,43 @@ mkdir(`${__dirname}/out`);
 mkdir(`${__dirname}/out/OEBPS`);
 mkdir(`${__dirname}/out/OEBPS/chapters`);
 mkdir(`${__dirname}/out/OEBPS/images`);
+mkdir(`${__dirname}/out/OEBPS/style`);
 
 console.log('Get all chapter info...');
 let rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-rl.question('请输入id：', id => {
+rl.question('请输入图书的主页面地址：', u => {
   rl.close();
   (async () => {
-    const html = await getPageContent(`${root_path}/${id}/`, 'gbk');
-    book.chapters = parseTableOfContent(html);
-    console.log('Get all chapter info complete!');
-  
-    // Get book title and cover image and autor.
-    Object.assign(book, parseTitle(html));
-  
+    const html = await getPageContent(u, 'utf8');
+    const parse = new Parse(html);
+
+    const bookUrl = url.parse(u);
+
+    switch (bookUrl.host) {
+      case 'www.luoxia.com':
+        parse.luoxia();
+      break;
+      case 'www.biquge.com':
+      // !!! TODO
+      break;
+      default: 
+        process.exit();
+      break;
+    }
+
     // Get image file.
-    await rp.get(`${root_path}/${book.imagePath}`).pipe(fs.createWriteStream(`${__dirname}/out/OEBPS/images/cover-image.jpg`));
+    await rp.get(`${parse.coverImage}`).pipe(fs.createWriteStream(`${__dirname}/out/OEBPS/images/cover-image.jpg`));
   
     // Get chapter file
-    let chapters = [...book.chapters];
+    let chapters = [...parse.chapters];
+    book.chapters = [...parse.chapters];
     await saveAllCahpter(chapters, 1);
   
     // Combine ebook file.
-    combine(book.title, chapters);
+    combine(parse.title.replace(' ', `-`), chapters);
   
     // Will delete
     console.log(book);
@@ -72,8 +86,8 @@ function saveAllCahpter(chapters, x) {
         console.log(chapter.id);
         try {
           const html = await getPageContent(
-            'http://www.biquge.com.tw' + chapter.link,
-            'gbk'
+            chapter.link,
+            'utf8'
           );
           saveChapter(chapter.id, parseChapter(html), chapter.name);
           book.chapters = book.chapters.filter(v => v.id !== chapter.id);

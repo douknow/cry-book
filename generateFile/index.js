@@ -21,6 +21,7 @@ module.exports = (title, allChapter) => {
 
   fs.writeFileSync(`${metaInfoPath}/container.xml`, containerContent);
   fs.writeFileSync(`${__dirname}/../out/mimetype`, mimetypeContent);
+  fs.writeFileSync(`${__dirname}/../out/OEBPS/style/style.css`, fs.readFileSync(`${__dirname}/resource/style.css`));
 
   opf(title, allChapter);
   toc(title, allChapter);
